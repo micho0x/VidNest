@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VidNest — keep the best quality</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%237c5cff'/><stop offset='1' stop-color='%234aa8ff'/></linearGradient></defs><rect width='64' height='64' rx='16' fill='%230b0b14'/><path d='M32 14v24m0 0l-9-9m9 9l9-9M16 44v6h32v-6' stroke='url(%23g)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="grain"></div>
+</div>
+
+<main class="shell">
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v11m0 0 4-4m-4 4-4-4" stroke="url(#lg)"/>
+          <path d="M4 15v3.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V15" stroke="url(#lg)"/>
+          <defs><linearGradient id="lg" x1="4" y1="3" x2="20" y2="21">
+            <stop stop-color="#8b6bff"/><stop offset="1" stop-color="#3fb6ff"/>
+          </linearGradient></defs>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>Vid<span>Nest</span></h1>
+        <p>Drop a link. Keep the best quality.</p>
+      </div>
+    </div>
+
+    <div class="engine" id="engine">
+      <span class="dot"></span>
+      <span id="engineText">starting engine…</span>
+    </div>
+  </header>
+
+  <section class="card">
+
+    <div class="field">
+      <label class="field-label" for="url">Video link <span class="field-note">— paste one, or several at once</span></label>
+      <div class="input-wrap">
+        <svg class="lead-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round">
+          <path d="M10.6 13.4a4 4 0 0 0 5.7 0l2.6-2.6a4 4 0 1 0-5.7-5.7L11.9 6.4"/>
+          <path d="M13.4 10.6a4 4 0 0 0-5.7 0l-2.6 2.6a4 4 0 1 0 5.7 5.7l1.3-1.3"/>
+        </svg>
+        <input id="url" type="text" placeholder="https://www.youtube.com/watch?v=…"
+               autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="hint">
+        <button class="paste" id="pasteBtn" type="button" title="Paste from clipboard" aria-label="Paste from clipboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="3.5" width="8" height="4" rx="1.2"/>
+            <path d="M16 5.5h1.6A2.4 2.4 0 0 1 20 7.9v10.7a2.4 2.4 0 0 1-2.4 2.4H6.4A2.4 2.4 0 0 1 4 18.6V7.9a2.4 2.4 0 0 1 2.4-2.4H8"/>
+          </svg>
+          <span>Paste</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="preview" id="preview" hidden>
+      <div class="preview-thumb" id="pvThumbWrap">
+        <img id="pvThumb" alt="" loading="lazy" referrerpolicy="no-referrer">
+      </div>
+      <div class="preview-body">
+        <div class="preview-title" id="pvTitle">Loading…</div>
+        <div class="preview-meta" id="pvMeta"></div>
+        <div class="chips" id="pvChips"></div>
+      </div>
+    </div>
+
+    <div class="folder-row">
+      <button class="folder-chip" id="folderChip" type="button" title="Change downloads folder">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h3.1c.6 0 1.2.3 1.6.8l.9 1.2h7.4A2.5 2.5 0 0 1 21 10.5v6A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-8Z"/>
+        </svg>
+        <span class="folder-path" id="folderPath">loading…</span>
+      </button>
+      <button class="ghost" id="chooseBtn" type="button">Change</button>
+      <button class="ghost icon-only" id="openBtn" type="button" title="Open folder in Explorer" aria-label="Open downloads folder">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 4h6v6"/><path d="M20 4 11 13"/>
+          <path d="M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="options">
+      <label class="opt">
+        <span>Quality</span>
+        <select id="quality">
+          <option value="best">Best available</option>
+          <option value="2160">4K · 2160p</option>
+          <option value="1440">1440p</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+          <option value="360">360p</option>
+          <option value="none">No video — audio only</option>
+        </select>
+      </label>
+
+      <label class="opt">
+        <span>Audio</span>
+        <select id="audio" title="What to do with the sound track">
+          <option value="best">Best audio</option>
+          <option value="none">No audio — video only</option>
+        </select>
+      </label>
+
+      <label class="opt">
+        <span>Cookies</span>
+        <select id="cookies" title="Pick a browser (close it first) or a cookies.txt file (browser can stay open)">
+          <option value="">Off</option>
+          <option value="file">cookies.txt file…</option>
+          <option value="edge">Edge</option>
+          <option value="chrome">Chrome</option>
+          <option value="firefox">Firefox</option>
+          <option value="brave">Brave</option>
+          <option value="opera">Opera</option>
+          <option value="vivaldi">Vivaldi</option>
+        </select>
+      </label>
+
+      <button class="ghost more" id="moreBtn" type="button" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round">
+          <path d="M4 8h16M4 16h16"/><circle cx="9" cy="8" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="16" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+        More
+      </button>
+    </div>
+
+    <div class="advanced" id="advanced" hidden>
+      <div class="adv-grid">
+
+        <div class="adv-field">
+          <span class="adv-label">Subtitles</span>
+          <div class="adv-row">
+            <label class="switch">
+              <input type="checkbox" id="optSubs">
+              <span class="track"></span>
+              <span class="switch-text">Embed</span>
+            </label>
+            <select id="subLangs" aria-label="Subtitle language">
+              <option value="en">English</option>
+              <option value="ar">Arabic</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+              <option value="pt">Portuguese</option>
+              <option value="hi">Hindi</option>
+              <option value="ja">Japanese</option>
+              <option value="ko">Korean</option>
+              <option value="ru">Russian</option>
+              <option value="tr">Turkish</option>
+              <option value="it">Italian</option>
+              <option value="nl">Dutch</option>
+              <option value="pl">Polish</option>
+              <option value="id">Indonesian</option>
+              <option value="all">All languages</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="adv-field">
+          <span class="adv-label">Playlist</span>
+          <div class="adv-row">
+            <label class="switch">
+              <input type="checkbox" id="optPlaylist">
+              <span class="track"></span>
+              <span class="switch-text">On</span>
+            </label>
+            <input id="playlistItems" type="text" placeholder="all items" spellcheck="false" aria-label="Playlist items">
+          </div>
+        </div>
+
+        <div class="adv-field">
+          <span class="adv-label">Speed limit</span>
+          <input id="rateLimit" type="text" placeholder="no limit — e.g. 5M" spellcheck="false" aria-label="Speed limit">
+        </div>
+
+        <div class="adv-field">
+          <span class="adv-label">Clip</span>
+          <div class="adv-row clip-inputs">
+            <input id="clipStart" type="text" placeholder="0:00" spellcheck="false" aria-label="Clip start">
+            <span class="arrow">→</span>
+            <input id="clipEnd" type="text" placeholder="end" spellcheck="false" aria-label="Clip end">
+          </div>
+        </div>
+
+        <div class="adv-toggles">
+          <label class="switch">
+            <input type="checkbox" id="optSponsor">
+            <span class="track"></span>
+            <span class="switch-text">Skip sponsor parts</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="optArchive">
+            <span class="track"></span>
+            <span class="switch-text">Skip already downloaded</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="optSound" checked>
+            <span class="track"></span>
+            <span class="switch-text">Sound when finished</span>
+          </label>
+        </div>
+
+      </div>
+    </div>
+
+    <button class="download" id="downloadBtn" type="button" data-kind="merge" disabled aria-describedby="hint">
+      <span class="download-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3.5v11"/><path d="m7 10 5 5 5-5"/><path d="M4.5 19h15"/>
+        </svg>
+      </span>
+      <span class="download-body">
+        <span class="download-title">Download</span>
+        <span class="download-sub" id="downloadSub">Best video + best audio</span>
+      </span>
+      <span class="download-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m12.5 6 6 6-6 6"/></svg>
+      </span>
+    </button>
+
+    <p class="hint" id="hint" aria-live="polite">Paste a link, pick what you want, hit Download.</p>
+  </section>
+
+  <section class="queue" id="queue" hidden>
+    <header class="queue-head">
+      <h2>Downloads <span class="count" id="count"></span></h2>
+      <button class="link" id="clearBtn" type="button">Clear finished</button>
+    </header>
+    <div id="jobs" class="jobs"></div>
+  </section>
+
+  <footer class="foot">
+    <span>Powered by yt-dlp + FFmpeg · <span id="engineVersion">—</span><span id="jsRuntime"></span></span>
+    <button class="link subtle" id="updateBtn" type="button" title="Fetch the newest yt-dlp build">Update engine</button>
+  </footer>
+
+</main>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite" aria-atomic="false"></div>
+<script src="/app.js"></script>
+</body>
+</html>
