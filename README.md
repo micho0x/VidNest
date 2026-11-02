@@ -629,4 +629,7 @@ tested by hand on real downloads. It's scripts, not a research project — and i
 VidNest is a local front-end for yt-dlp. **You** are responsible for what you download and for
 respecting the terms of service and copyright laws that apply to you. Only download content you
 own, that is public domain, that is licensed for reuse, or that you otherwise have permission to
-save. The author takes no responsibility for misuse.
+save. 
+
+**Ethical & Religious Disclaimer:** 
+Please use this tool for beneficial and permissible purposes only (such as educational videos, tutorials, etc.). The author strictly prohibits the use of this tool for downloading any inappropriate or religiously forbidden content (such as music). By using this tool, you acknowledge that you bear full responsibility for your actions before God, and the author clears his responsibility entirely from any sinful or prohibited use.
